@@ -1,4 +1,6 @@
 ﻿using Acme.Product.Brands;
+using Acme.Product.Categories;
+using Acme.Product.ProductImages;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -27,6 +29,8 @@ public class ProductDbContext :
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Brand> Brands { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext
@@ -90,6 +94,19 @@ public class ProductDbContext :
                 ProductConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+        });
+        builder.Entity<Category>(b =>
+        {
+            b.ToTable("Categories",
+                ProductConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+        });
+        builder.Entity<ProductImage>(b =>
+        {
+            b.ToTable("ProductImages",
+                ProductConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
         });
     }
 }
