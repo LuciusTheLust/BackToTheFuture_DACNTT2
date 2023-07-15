@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Acme.OrderService.Orders;
+using Acme.OrderService.OrderProducts; 
+using Acme.OrderService.OrderProductItems;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -24,6 +28,9 @@ public class OrderServiceDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+    public DbSet<OrderProductItem> OrderProductItems { get; set; }
+    public DbSet<OrderProduct> OrderProducts { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
     #region Entities from the modules
 
@@ -82,5 +89,26 @@ public class OrderServiceDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+        builder.Entity<OrderProductItem>(b =>
+        {
+            b.ToTable(OrderServiceConsts.DbTablePrefix + "OrderProductItems",
+                OrderServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
+
+        builder.Entity<OrderProduct>(b =>
+        {
+            b.ToTable(OrderServiceConsts.DbTablePrefix + "OrderProducts",
+                OrderServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
+
+        builder.Entity<Order>(b =>
+        {
+            b.ToTable(OrderServiceConsts.DbTablePrefix + "Orders",
+                OrderServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
     }
 }

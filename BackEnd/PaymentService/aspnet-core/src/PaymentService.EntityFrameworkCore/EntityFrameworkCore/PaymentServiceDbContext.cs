@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Acme.PaymentService.Payments;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -24,6 +26,7 @@ public class PaymentServiceDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+    public DbSet<Payment> Payments { get; set; }
 
     #region Entities from the modules
 
@@ -82,5 +85,11 @@ public class PaymentServiceDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<Payment>(b =>
+        {
+            b.ToTable(PaymentServiceConsts.DbTablePrefix + "Payments",
+                PaymentServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
     }
 }

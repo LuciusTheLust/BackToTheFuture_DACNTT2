@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Acme.HistoryService.PurchaseProducts;
+using Acme.HistoryService.RatingProducts;
+using Acme.HistoryService.ViewProducts;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -24,6 +28,9 @@ public class HistoryServiceDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+    public DbSet<PurchaseProduct> PurchaseProducts { get; set; }
+    public DbSet<RatingProduct> RatingProducts { get; set; }
+    public DbSet<ViewProduct> ViewProducts { get; set; }
 
     #region Entities from the modules
 
@@ -82,5 +89,27 @@ public class HistoryServiceDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+        builder.Entity<PurchaseProduct>(b =>
+        {
+            b.ToTable(HistoryServiceConsts.DbTablePrefix + "PurchaseProducts",
+                HistoryServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
+
+        builder.Entity<RatingProduct>(b =>
+        {
+            b.ToTable(HistoryServiceConsts.DbTablePrefix + "RatingProduct",
+                HistoryServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
+
+        builder.Entity<ViewProduct>(b =>
+        {
+            b.ToTable(HistoryServiceConsts.DbTablePrefix + "ViewProducts",
+                HistoryServiceConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+        });
+
     }
 }

@@ -1,13 +1,14 @@
-﻿using AutoMapper;
+﻿using Acme.PaymentService.Payments;
+using AutoMapper;
+using PaymentService.Payments;
 
-namespace PaymentService;
+namespace Acme.PaymentService;
 
 public class PaymentServiceApplicationAutoMapperProfile : Profile
 {
     public PaymentServiceApplicationAutoMapperProfile()
     {
-        /* You can configure your AutoMapper mapping configuration here.
-         * Alternatively, you can split your mapping configurations
-         * into multiple profile classes for a better organization. */
+        CreateMap<Payment, PaymentDto>();
+        CreateMap<CreateUpdatePaymentDto, Payment>();
     }
 }

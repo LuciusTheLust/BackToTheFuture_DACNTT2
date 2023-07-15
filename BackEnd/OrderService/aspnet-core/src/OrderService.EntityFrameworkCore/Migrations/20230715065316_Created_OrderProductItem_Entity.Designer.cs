@@ -2,19 +2,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PaymentService.EntityFrameworkCore;
+using OrderService.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 #nullable disable
 
-namespace PaymentService.Migrations
+namespace OrderService.Migrations
 {
-    [DbContext(typeof(PaymentServiceDbContext))]
-    partial class PaymentServiceDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(OrderServiceDbContext))]
+    [Migration("20230715065316_Created_OrderProductItem_Entity")]
+    partial class CreatedOrderProductItemEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,14 +27,10 @@ namespace PaymentService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Acme.PaymentService.Payments.Payment", b =>
+            modelBuilder.Entity("Acme.OrderService.OderProductItems.OrderProductItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Balance")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -63,16 +62,27 @@ namespace PaymentService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("type")
+                    b.Property<int>("Quantity")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Thumbnail")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppPayments", (string)null);
+                    b.ToTable("AppOrderProductItems", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
